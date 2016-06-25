@@ -17,15 +17,15 @@ object HomeController extends Controller {
     }
 
     def create = Action.async(parse.json) { implicit request =>
-    	request.body.validate[Item] match {
-	    case JsSuccess(item, _) => {
-                 val knowledge = Knowledge(0, item.knowledge)
-	    	 Knowledges.add(knowledge).map(res =>
-                     Ok("Added")
-                 )
+        request.body.validate[Item] match {
+            case JsSuccess(item, _) => {
+                val knowledge = Knowledge(0, item.knowledge)
+                Knowledges.add(knowledge).map(res =>
+                    Ok("Added")
+                )
             }
-	    case JsError(errors) => {
-	    	 Future.successful(BadRequest)
+            case JsError(errors) => {
+                Future.successful(BadRequest)
             }
         }
     }
