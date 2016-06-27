@@ -11,9 +11,12 @@ object HomeController extends Controller {
     case class Item(knowledge: String)
 
     implicit val createItem = Json.reads[Item]
+    implicit val writeKnowledge = Json.writes[Knowledge]
 
-    def index = Action {
-        Ok("Hello world!")
+    def index = Action.async {
+        Knowledges.listAll.map(res =>
+            Ok(Json.toJson(res))
+        )
     }
 
     def create = Action.async(parse.json) { implicit request =>
